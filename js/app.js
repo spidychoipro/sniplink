@@ -48,11 +48,11 @@
     }
   }
 
-  function showError(title, desc, isDarkWeb) {
+  function showError(title, desc) {
     DOM.errorTitle.textContent = title;
     DOM.errorDesc.innerHTML = desc.replace(/\n/g, '<br>');
-    DOM.errorIcon.textContent = isDarkWeb ? '⛔' : '⚠️';
-    DOM.errorCard.className = 'error-card' + (isDarkWeb ? ' darkweb' : '');
+    DOM.errorIcon.textContent = '⚠️';
+    DOM.errorCard.className = 'error-card';
     DOM.loadingSection.classList.add('hidden');
     DOM.errorSection.classList.remove('hidden');
     DOM.resultSection.classList.add('hidden');
@@ -147,12 +147,7 @@
       showToast('✂️ 요약 완료!', 'success');
     } catch (e) {
       const msg = e.message || '알 수 없는 오류가 발생했습니다.';
-      const isDark = msg.includes('금지') || msg.includes('다크웹') || msg.includes('차단');
-      showError(
-        isDark ? '⛔ 접근 차단' : '처리 실패',
-        msg,
-        isDark
-      );
+      showError('처리 실패', msg);
     } finally {
       DOM.snipBtn.disabled = false;
       DOM.snipBtn.textContent = 'Snip! ✂️';

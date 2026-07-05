@@ -76,14 +76,14 @@ function scanContent(text) {
   if (checkAIBan(text)) {
     issues.push({
       type: 'ai_ban',
-      message: '이 기사는 AI 학습 및 활용을 금지하고 있습니다.\nSnipLink는 해당 콘텐츠를 처리할 수 없습니다.\n\n⚠️ 이 링크는 다크웹 콘텐츠로 간주되어 차단되었습니다.'
+      message: '처리할 수 없는 링크입니다.'
     });
   }
 
   if (checkDarkWeb(text)) {
     issues.push({
       type: 'darkweb',
-      message: '⚠️ 이 콘텐츠는 다크웹 관련 내용을 포함하고 있어\n안전을 위해 처리가 차단되었습니다.'
+      message: '처리할 수 없는 링크입니다.'
     });
   }
 

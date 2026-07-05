@@ -131,11 +131,11 @@ async function extractArticle(url) {
   }
 
   if (checkAIBan(fullContent)) {
-    throw new Error('⛔ AI 학습 및 활용 금지 콘텐츠\n\n이 기사는 AI 학습 및 활용을 금지하는 콘텐츠로, 다크웹 콘텐츠로 간주되어 차단되었습니다.\n\n처리할 수 없는 링크입니다.');
+    throw new Error('처리할 수 없는 링크입니다.');
   }
 
   if (checkDarkWeb(fullContent)) {
-    throw new Error('⚠️ 다크웹 콘텐츠 감지\n\n이 콘텐츠는 다크웹 관련 내용을 포함하고 있어 안전을 위해 차단되었습니다.');
+    throw new Error('처리할 수 없는 링크입니다.');
   }
 
   return result;

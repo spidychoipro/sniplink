@@ -93,13 +93,15 @@
     bluesky: 'Bluesky에 공유',
   };
 
-  function renderCard(platform, summary) {
+  function renderCard(platform, summary, url) {
     var now = new Date();
     var timeStr = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
     var dateStr = now.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
     var hn = escapeHtml;
     var card = document.getElementById('snsCard');
     card.className = 'sns-card sns-' + platform;
+    var domain = '';
+    try { domain = new URL(url).hostname.replace('www.', ''); } catch (e) {}
     var h = '';
 
     switch (platform) {
@@ -115,6 +117,7 @@
           '</div>' +
           '<div class="sns-card-body">' +
             '<p class="sns-summary-text">' + hn(summary) + '</p>' +
+            '<div class="sns-url">🔗 <a href="' + hn(url) + '" target="_blank" rel="noopener">' + hn(domain) + '</a></div>' +
           '</div>' +
           '<div class="sns-card-footer">' +
             '<div class="sns-actions-row">' +
@@ -123,7 +126,7 @@
               '<button class="sns-action-btn like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span>0</span></button>' +
               '<button class="sns-action-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg></button>' +
             '</div>' +
-            '<div class="sns-timestamp">' + summary.length + '자 · <span class="tweet-stats">0 조회</span></div>' +
+            '<div class="sns-timestamp">' + timeStr + ' · <span class="tweet-stats">0 조회</span></div>' +
           '</div>';
         break;
 
@@ -149,7 +152,8 @@
               '<button class="sns-action-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>' +
             '</div>' +
             '<div class="sns-timestamp" style="font-weight:600">좋아요 0개</div>' +
-            '<div class="sns-timestamp">sniplink ' + hn(summary).slice(0, 30) + '...</div>' +
+            '<div class="sns-timestamp"><span class="sns-username">sniplink</span> ' + hn(summary).slice(0, 30) + '...</div>' +
+            '<div class="sns-timestamp" style="font-size:11px">🔗 ' + hn(domain) + '</div>' +
             '<div class="sns-timestamp" style="font-size:11px">' + dateStr + '</div>' +
           '</div>';
         break;
@@ -166,6 +170,7 @@
           '</div>' +
           '<div class="sns-card-body">' +
             '<p class="sns-summary-text">' + hn(summary) + '</p>' +
+            '<div class="sns-url">🔗 <a href="' + hn(url) + '" target="_blank" rel="noopener">' + hn(domain) + '</a></div>' +
           '</div>' +
           '<div class="sns-card-footer">' +
             '<div class="sns-actions-row">' +
@@ -174,12 +179,11 @@
               '<button class="sns-action-btn like-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span>0</span></button>' +
               '<button class="sns-action-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg></button>' +
             '</div>' +
-            '<div class="sns-timestamp">' + summary.length + '자 · ' + timeStr + '</div>' +
+            '<div class="sns-timestamp">' + timeStr + '</div>' +
           '</div>';
         break;
 
       case 'reddit':
-        var titleHtml = hn(currentArticle.title || '기사 요약');
         h =
           '<div class="reddit-container">' +
             '<div class="reddit-votes">' +
@@ -189,8 +193,9 @@
             '</div>' +
             '<div class="reddit-content">' +
               '<div class="reddit-meta">r/news <span class="dot">·</span> Posted by u/SnipLink <span class="dot">·</span> ' + timeStr + '</div>' +
-              '<h3 class="reddit-title">' + titleHtml + '</h3>' +
+              '<h3 class="reddit-title">' + hn(currentArticle.title || '기사 요약') + '</h3>' +
               '<div class="sns-card-body"><p class="sns-summary-text">' + hn(summary) + '</p></div>' +
+              '<div class="sns-url" style="padding:0 0 4px 0;font-size:12px">🔗 <a href="' + hn(url) + '" target="_blank" rel="noopener">' + hn(domain) + '</a></div>' +
               '<div class="reddit-footer">' +
                 '<button class="reddit-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> 0 Comments</button>' +
                 '<button class="reddit-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg> Share</button>' +
@@ -214,6 +219,7 @@
           '<div class="linkedin-badge">' + timeStr + ' · <span class="dot">📰</span> Article</div>' +
           '<div class="sns-card-body">' +
             '<p class="sns-summary-text">' + hn(summary) + '</p>' +
+            '<div class="sns-url">🔗 <a href="' + hn(url) + '" target="_blank" rel="noopener">' + hn(domain) + '</a></div>' +
           '</div>' +
           '<div class="sns-card-footer">' +
             '<div class="linkedin-reactions">' +
@@ -241,6 +247,7 @@
           '</div>' +
           '<div class="sns-card-body">' +
             '<p class="sns-summary-text">' + hn(summary) + '</p>' +
+            '<div class="sns-url">🔗 <a href="' + hn(url) + '" target="_blank" rel="noopener">' + hn(domain) + '</a></div>' +
           '</div>' +
           '<div class="sns-card-footer">' +
             '<div class="sns-actions-row">' +
@@ -273,7 +280,7 @@
       cachedSummaries[cacheKey] = generateSummary(currentArticle, platform);
     }
 
-    renderCard(platform, cachedSummaries[cacheKey]);
+    renderCard(platform, cachedSummaries[cacheKey].display, currentArticle.url);
   }
 
   function escapeHtml(text) {
@@ -361,7 +368,7 @@
 
   DOM.copyBtn.addEventListener('click', async () => {
     if (!currentArticle || !cachedSummaries[currentPlatform]) return;
-    const text = cachedSummaries[currentPlatform];
+    const text = cachedSummaries[currentPlatform].share;
     const ok = await SNS.copyToClipboard(text);
     if (ok) {
       showToast('📋 클립보드에 복사되었습니다!', 'success');
@@ -372,13 +379,13 @@
 
   DOM.tweetBtn.addEventListener('click', () => {
     if (!currentArticle || !cachedSummaries[currentPlatform]) return;
-    const text = cachedSummaries[currentPlatform];
+    const text = cachedSummaries[currentPlatform].share;
     SNS.shareTo(currentPlatform, text, currentArticle.url);
   });
 
   DOM.shareBtn.addEventListener('click', async () => {
     if (!currentArticle || !cachedSummaries[currentPlatform]) return;
-    const text = cachedSummaries[currentPlatform];
+    const text = cachedSummaries[currentPlatform].share;
 
     const shared = await SNS.webShare({
       title: currentArticle.title || 'SnipLink 요약',

@@ -143,12 +143,12 @@ async function extractArticle(url) {
 
 function getPlatformSummaryLength(platform) {
   switch (platform) {
-    case 'twitter': return { maxChars: 100, maxSentences: 2 };
-    case 'threads': return { maxChars: 180, maxSentences: 3 };
-    case 'instagram': return { maxChars: 250, maxSentences: 3 };
-    case 'reddit': return { maxChars: 180, maxSentences: 2 };
-    case 'linkedin': return { maxChars: 200, maxSentences: 2 };
-    case 'bluesky': return { maxChars: 120, maxSentences: 2 };
-    default: return { maxChars: 100, maxSentences: 2 };
+    case 'twitter': return { maxChars: 80, maxSentences: 1 };
+    case 'threads': return { maxChars: 120, maxSentences: 1 };
+    case 'instagram': return { maxChars: 150, maxSentences: 1 };
+    case 'reddit': return { maxChars: 120, maxSentences: 1 };
+    case 'linkedin': return { maxChars: 100, maxSentences: 1 };
+    case 'bluesky': return { maxChars: 80, maxSentences: 1 };
+    default: return { maxChars: 80, maxSentences: 1 };
   }
 }

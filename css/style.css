@@ -535,6 +535,21 @@ body::before {
   color: var(--text-muted);
 }
 
+.sns-url {
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 4px 0;
+}
+
+.sns-url a {
+  color: #1d9bf0;
+  text-decoration: none;
+}
+
+.sns-url a:hover {
+  text-decoration: underline;
+}
+
 /* Reddit */
 .sns-card.sns-reddit {
   background: #0f0f0f;

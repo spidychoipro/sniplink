@@ -248,8 +248,8 @@ function formatForPlatform(summary, platform, articleTitle, articleUrl) {
       const body = summary;
       const footer = `\n\n🔗 ${articleUrl}`;
       let full = body + footer;
-      if (full.length > 140) {
-        const maxBody = 140 - footer.length - 10;
+      if (full.length > 280) {
+        const maxBody = 280 - footer.length - 10;
         full = body.slice(0, Math.max(maxBody, 30)) + '...' + footer;
       }
       return full;
@@ -282,6 +282,7 @@ function formatForPlatform(summary, platform, articleTitle, articleUrl) {
 }
 
 function generateSummary(article, platform) {
-  const summary = extractSummary(article.text, platform);
-  return formatForPlatform(summary, platform, article.title, article.url);
+  const display = extractSummary(article.text, platform);
+  const share = formatForPlatform(display, platform, article.title, article.url);
+  return { display, share };
 }

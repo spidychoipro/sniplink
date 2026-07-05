@@ -22,12 +22,18 @@
     tweetBtn: document.getElementById('tweetBtn'),
     shareBtn: document.getElementById('shareBtn'),
     platformTabs: document.querySelectorAll('.platform-tab'),
+    pickerBtns: document.querySelectorAll('.picker-btn'),
     toast: document.getElementById('toast'),
   };
 
   let currentArticle = null;
   let currentPlatform = 'twitter';
   let cachedSummaries = {};
+
+  function getSelectedPlatform() {
+    const active = document.querySelector('.picker-btn.active');
+    return active ? active.dataset.platform : 'twitter';
+  }
 
   function showToast(msg, type) {
     const t = DOM.toast;
@@ -68,6 +74,10 @@
     DOM.loadingSection.classList.add('hidden');
     DOM.errorSection.classList.add('hidden');
     DOM.resultSection.classList.remove('hidden');
+
+    DOM.platformTabs.forEach(t =>
+      t.classList.toggle('active', t.dataset.platform === currentPlatform)
+    );
 
     updatePlatformTab(currentPlatform);
 
@@ -137,6 +147,8 @@
     setLoading(1, '기사를 읽고 있어요...');
 
     try {
+      currentPlatform = getSelectedPlatform();
+
       setLoading(2, '내용을 분석하고 있어요...');
       const article = await extractArticle(url);
 
@@ -165,6 +177,17 @@
   DOM.platformTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       updatePlatformTab(tab.dataset.platform);
+      document.querySelectorAll('.picker-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.platform === tab.dataset.platform)
+      );
+    });
+  });
+
+  DOM.pickerBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      DOM.pickerBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentPlatform = btn.dataset.platform;
     });
   });
 

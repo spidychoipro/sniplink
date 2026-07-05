@@ -91,6 +91,16 @@
       tab.classList.toggle('active', tab.dataset.platform === platform);
     });
 
+    const shareLabels = {
+      twitter: 'X에 공유',
+      instagram: 'Instagram에 공유',
+      threads: 'Threads에 공유',
+      reddit: 'Reddit에 공유',
+      linkedin: 'LinkedIn에 공유',
+      bluesky: 'Bluesky에 공유',
+    };
+    DOM.tweetBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> ${shareLabels[platform] || '공유하기'}`;
+
     if (!currentArticle) return;
 
     const cacheKey = platform;
@@ -205,7 +215,7 @@
   DOM.tweetBtn.addEventListener('click', () => {
     if (!currentArticle || !cachedSummaries[currentPlatform]) return;
     const text = cachedSummaries[currentPlatform];
-    SNS.tweet(text);
+    SNS.shareTo(currentPlatform, text, currentArticle.url);
   });
 
   DOM.shareBtn.addEventListener('click', async () => {

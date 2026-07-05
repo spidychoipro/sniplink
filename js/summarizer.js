@@ -264,6 +264,18 @@ function formatForPlatform(summary, platform, articleTitle, articleUrl) {
       return `${title}\n\n${summary}\n\n.\n.\n.\n${hashtags}\n\n🔗 ${articleUrl}`;
     }
 
+    case 'reddit': {
+      return `📌 ${title}\n\n${summary}\n\n🔗 ${articleUrl}\n\n💬 r/news · u/SnipLink`;
+    }
+
+    case 'linkedin': {
+      return `📰 ${title}\n\n${summary}\n\n#SnipLink #요약 #뉴스\n\n🔗 ${articleUrl}`;
+    }
+
+    case 'bluesky': {
+      return `📰 ${title}\n\n${summary}\n\n🔗 ${articleUrl}`;
+    }
+
     default:
       return `${title}\n\n${summary}\n\n🔗 ${articleUrl}`;
   }

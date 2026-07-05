@@ -146,6 +146,9 @@ function getPlatformSummaryLength(platform) {
     case 'twitter': return { maxChars: 250, maxSentences: 3 };
     case 'threads': return { maxChars: 460, maxSentences: 5 };
     case 'instagram': return { maxChars: 1000, maxSentences: 8 };
+    case 'reddit': return { maxChars: 500, maxSentences: 5 };
+    case 'linkedin': return { maxChars: 700, maxSentences: 6 };
+    case 'bluesky': return { maxChars: 300, maxSentences: 3 };
     default: return { maxChars: 250, maxSentences: 3 };
   }
 }

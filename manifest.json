@@ -1,0 +1,12 @@
+{
+  "name": "SnipLink",
+  "short_name": "SnipLink",
+  "description": "링크를 싹둑, SNS에 딱! 기사를 SNS 형식으로 요약",
+  "start_url": "/sniplink/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "icons": [
+    { "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✂️</text></svg>", "sizes": "192x192", "type": "image/svg+xml" }
+  ]
+}

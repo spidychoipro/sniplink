@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SnipLink — 링크를 싹둑, SNS에 딱!</title>
+<meta name="description" content="기사 링크를 넣으면 SNS 글 형식으로 요약해드립니다. Twitter, Instagram, Threads 스타일로 요약.">
+<meta name="theme-color" content="#0a0a0f">
+<meta property="og:title" content="SnipLink — 링크를 싹둑, SNS에 딱!">
+<meta property="og:description" content="기사 링크를 SNS 글 형식으로 요약해드립니다">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://spidychoipro.github.io/sniplink/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✂️</text></svg>">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app">
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">✂️</span>
+        <span class="logo-text">SnipLink</span>
+      </div>
+      <p class="tagline">링크를 싹둑, SNS에 딱!</p>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-input-wrap">
+        <div class="input-group">
+          <input type="url" id="urlInput" class="url-input" placeholder="영어 / 한국어 기사 링크를 붙여넣으세요" autocomplete="url" autocorrect="off" spellcheck="false">
+          <button id="snipBtn" class="snip-btn">Snip! ✂️</button>
+        </div>
+        <p class="input-hint">지원: 한국어, 영어 기사만 가능합니다</p>
+      </div>
+    </section>
+
+    <section id="loadingSection" class="section loading-section hidden">
+      <div class="loading-content">
+        <div class="spinner-ring"></div>
+        <p class="loading-text" id="loadingText">기사를 읽고 있어요...</p>
+        <div class="loading-steps" id="loadingSteps">
+          <span class="step active" data-step="1">📡 페이지 불러오기</span>
+          <span class="step" data-step="2">📄 내용 추출</span>
+          <span class="step" data-step="3">✂️ 요약 생성</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="errorSection" class="section error-section hidden">
+      <div class="error-card" id="errorCard">
+        <div class="error-icon-wrap">
+          <span class="error-icon" id="errorIcon">⚠️</span>
+        </div>
+        <p class="error-title" id="errorTitle">오류가 발생했습니다</p>
+        <p class="error-desc" id="errorDesc"></p>
+        <button class="retry-btn" id="retryBtn">다시 시도</button>
+      </div>
+    </section>
+
+    <section id="resultSection" class="section result-section hidden">
+      <div class="result-header">
+        <div class="article-meta">
+          <h2 class="article-title" id="articleTitle"></h2>
+          <span class="article-source" id="articleSource"></span>
+        </div>
+      </div>
+
+      <div class="platform-tabs">
+        <button class="platform-tab active" data-platform="twitter">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          X / Twitter
+        </button>
+        <button class="platform-tab" data-platform="instagram">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          Instagram
+        </button>
+        <button class="platform-tab" data-platform="threads">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M14.242 11.498c.415-.22 1.004-.548 1.392-1.028.439-.543.64-1.208.602-2.04-.058-1.178-.656-2.001-1.68-2.58-.988-.557-2.295-.71-4.268-.71H7.265v9.715h3.29c1.646 0 2.89-.178 3.727-.66.872-.502 1.322-1.255 1.402-2.247.08-.99-.221-1.756-.957-2.283-.447-.32-1.006-.524-1.687-.628a5.48 5.48 0 00-.798-.083l.004.36c0 .398.014.695.042.893.06.422.226.853.567 1.17.329.305.807.49 1.465.49.68 0 1.256-.27 1.654-.684.395-.414.617-.97.633-1.634z"/><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.642 12.556c-.678.598-1.6.937-2.72.991-.18.008-.363.012-.546.012h-.396c-.35 0-.694-.006-1.028-.018-.638-.023-1.218-.108-1.73-.285a4.352 4.352 0 01-.478.66c-.481.58-1.124.909-1.895 1.005a4.93 4.93 0 01-.519.048l.183.355c.087.17.19.33.308.48.544.687 1.31 1.14 2.315 1.38.407.096.86.155 1.364.174.459.017.939.016 1.437-.008 1.238-.06 2.347-.326 3.31-.817.963-.493 1.698-1.193 2.2-2.092.5-.894.752-1.923.752-3.087 0-1.106-.207-2.105-.619-3.001a6.538 6.538 0 00-1.68-2.289 7.48 7.48 0 00-2.482-1.385C14.8 5.5 13.67 5.24 12.42 5.1 11.94 5.047 11.44 5.016 10.92 5.01c-.52-.007-1.052.002-1.594.027-1.085.05-2.1.237-3.036.562a8.147 8.147 0 00-2.485 1.36A6.737 6.737 0 002.935 8.58a6.151 6.151 0 00-.683 2.854c0 .999.15 1.927.447 2.787.299.86.72 1.63 1.264 2.31a6.14 6.14 0 001.925 1.62l.402.233.235-.4a3.397 3.397 0 01-.332-.247 5.95 5.95 0 01-1.077-1.165 6.813 6.813 0 01-.795-1.536 6.82 6.82 0 01-.332-1.79 7.39 7.39 0 01.029-.88c.06-.596.22-1.168.48-1.718.26-.55.611-1.053 1.054-1.509a7.11 7.11 0 012.031-1.38c.769-.352 1.628-.585 2.554-.693.463-.054.925-.082 1.386-.082h5.063v2.601h-2.71c.206.295.37.61.492.947.242.671.363 1.425.363 2.262 0 .6-.082 1.14-.247 1.618a3.97 3.97 0 01-.712 1.28z"/></svg>
+          Threads
+        </button>
+      </div>
+
+      <div class="sns-preview" id="snsPreview">
+        <div class="sns-card" id="snsCard">
+          <div class="sns-card-header">
+            <div class="sns-avatar">
+              <span>✂️</span>
+            </div>
+            <div class="sns-user-info">
+              <div class="sns-display-name">SnipLink</div>
+              <div class="sns-username">@sniplink</div>
+            </div>
+            <div class="sns-more">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>
+            </div>
+          </div>
+          <div class="sns-card-body" id="snsCardBody">
+            <p class="sns-summary-text">요약을 생성 중입니다...</p>
+          </div>
+          <div class="sns-card-footer">
+            <div class="sns-actions-row">
+              <button class="sns-action-btn" title="Reply">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              </button>
+              <button class="sns-action-btn" title="Repost">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4M7 23l-4-4 4-4"/><path d="M21 5H9a4 4 0 00-4 4v3M3 19h12a4 4 0 004-4v-3"/></svg>
+              </button>
+              <button class="sns-action-btn" title="Like">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              </button>
+              <button class="sns-action-btn" title="Share">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+              </button>
+            </div>
+            <div class="sns-timestamp" id="snsTimestamp">방금 전 · 0 조회</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-actions">
+        <button class="action-btn btn-copy" id="copyBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          복사하기
+        </button>
+        <button class="action-btn btn-tweet" id="tweetBtn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          X에 공유
+        </button>
+        <button class="action-btn btn-share" id="shareBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+          공유하기
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>SnipLink — 완전 무료 · 서버 없는 브라우저 기반 요약</p>
+      <p class="footer-small">✂️ 링크를 싹둑, SNS에 딱!</p>
+    </div>
+  </footer>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="js/detector.js"></script>
+<script src="js/extractor.js"></script>
+<script src="js/summarizer.js"></script>
+<script src="js/sns.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

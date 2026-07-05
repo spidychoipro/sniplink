@@ -531,37 +531,181 @@ body::before {
   margin-left: 2px;
 }
 
-.reddit-title {
-  font-size: 17px;
-  font-weight: 500;
-  line-height: 1.3;
-  margin-bottom: 8px;
-  color: var(--text-primary);
+.tweet-stats {
+  color: var(--text-muted);
 }
 
-.sns-card.sns-twitter {
-  background: #000;
-}
-
-.sns-card.sns-instagram {
-  background: #000;
-}
-
-.sns-card.sns-threads {
-  background: #101010;
-}
-
+/* Reddit */
 .sns-card.sns-reddit {
   background: #0f0f0f;
   border-color: #343536;
 }
 
+.reddit-container {
+  display: flex;
+}
+
+.reddit-votes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 6px 8px 10px;
+  background: #0a0a0f;
+  min-width: 40px;
+}
+
+.vote-btn {
+  background: transparent;
+  border: none;
+  color: #818384;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.vote-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.upvote:hover { color: #ff4500; }
+.downvote:hover { color: #7193ff; }
+
+.vote-score {
+  font-size: 13px;
+  font-weight: 700;
+  color: #818384;
+}
+
+.reddit-content {
+  flex: 1;
+  padding: 8px 12px 4px;
+  min-width: 0;
+}
+
+.reddit-meta {
+  font-size: 11px;
+  color: #818384;
+  margin-bottom: 6px;
+}
+
+.reddit-title {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+.reddit-content .sns-card-body {
+  padding: 4px 0 8px;
+}
+
+.reddit-footer {
+  display: flex;
+  gap: 2px;
+  padding: 4px 0;
+  flex-wrap: wrap;
+}
+
+.reddit-btn {
+  background: transparent;
+  border: none;
+  color: #818384;
+  font-size: 12px;
+  font-family: var(--font);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.15s;
+  font-weight: 500;
+}
+
+.reddit-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.reddit-btn:hover {
+  background: rgba(255,255,255,0.04);
+  color: #d7dadc;
+}
+
+/* Instagram */
+.sns-card.sns-instagram {
+  background: #000;
+}
+
+.insta-placeholder {
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  opacity: 0.3;
+}
+
+/* Threads */
+.sns-card.sns-threads {
+  background: #101010;
+}
+
+/* LinkedIn */
 .sns-card.sns-linkedin {
   background: #000;
   border-color: #313131;
 }
 
+.linkedin-badge {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 0 16px 8px;
+}
+
+.linkedin-reactions {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  padding-bottom: 4px;
+}
+
+.linkedin-action {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 4px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: background 0.15s;
+}
+
+.linkedin-action:hover {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-secondary);
+}
+
+/* Bluesky */
 .sns-card.sns-bluesky {
+  background: #000;
+}
+
+/* Twitter */
+.sns-card.sns-twitter {
   background: #000;
 }
 
@@ -569,6 +713,9 @@ body::before {
   width: 18px;
   height: 18px;
 }
+
+.like-btn:hover { color: #f91880 !important; }
+.sns-action-btn:hover { color: var(--text-secondary); }
 
 .summary-actions {
   display: flex;

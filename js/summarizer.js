@@ -265,7 +265,7 @@ function formatForPlatform(summary, platform, articleTitle, articleUrl) {
     }
 
     case 'reddit': {
-      return `📌 ${title}\n\n${summary}\n\n🔗 ${articleUrl}\n\n💬 r/news · u/SnipLink`;
+      return `${title}\n\n${summary}\n\n🔗 ${articleUrl}`;
     }
 
     case 'linkedin': {

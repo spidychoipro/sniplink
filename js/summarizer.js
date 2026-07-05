@@ -244,13 +244,13 @@ function formatForPlatform(summary, platform, articleTitle, articleUrl) {
 
   switch (platform) {
     case 'twitter': {
-      const header = `📰 ${title}\n\n`;
+      const header = ``;
       const body = summary;
       const footer = `\n\n🔗 ${articleUrl}`;
-      let full = header + body + footer;
-      if (full.length > 275) {
-        const maxBody = 275 - header.length - footer.length - 20;
-        full = header + body.slice(0, Math.max(maxBody, 50)) + '...' + footer;
+      let full = body + footer;
+      if (full.length > 140) {
+        const maxBody = 140 - footer.length - 10;
+        full = body.slice(0, Math.max(maxBody, 30)) + '...' + footer;
       }
       return full;
     }
